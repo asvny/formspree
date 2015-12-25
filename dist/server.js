@@ -7,7 +7,7 @@ var _ = require('koa-route');
 var parse = require('co-body');
 var app = koa();
 
-//var mailer = require('nodemailer').createTransport();
+var mailer = require('nodemailer').createTransport();
 
 var isEmail = function isEmail(value) {
 	return (/\S+@\S+\.\S+/.test(value)
@@ -35,21 +35,14 @@ function* process(email) {
 		to: email + ' , ' + cc
 	};
 
-	/*mailer.sendMail(opts, function (err, info) {
+	mailer.sendMail(opts, function (err, info) {
 		if (err) throw new Error('Problem in Mail Sender :(');
 
 		!!_next && _this.redirect(_next);
-	});*/
+	});
    console.log(JSON.stringify(opts));
    this.body=JSON.stringify(opts);
 }
-
-
-app.use(function*(next){
-	//this.body='holla world';
-    yield next;
-})
-
 
 app.use(_.post('/:email', process));
 app.listen(1337);
